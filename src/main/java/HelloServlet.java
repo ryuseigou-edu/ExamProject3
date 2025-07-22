@@ -54,7 +54,7 @@ public class HelloServlet extends HttpServlet {
         for(Character character : party) {
             out.println(character.showStatus());
             out.println("<br>");
-        };
+        }
         out.println("<br>");
 
         out.println("<h2>---敵グループ---</h2>");
@@ -71,15 +71,11 @@ public class HelloServlet extends HttpServlet {
     }
 
     private static Monster choiceEnemy() {
-        switch ((int)(Math.random() * 3)) {
-            case 0:
-                return new Matango(45, (char) ('A' + matangoCnt++));
-            case 1:
-                return new Goblin(50, (char) ('A' + goblinCnt++));
-            case 2:
-                return new Slime(40, (char) ('A' + slimeCnt++));
-            default:
-                throw new IllegalArgumentException();
-        }
+        return switch ((int) (Math.random() * 3)) {
+            case 0 -> new Matango(45, (char) ('A' + matangoCnt++));
+            case 1 -> new Goblin(50, (char) ('A' + goblinCnt++));
+            case 2 -> new Slime(40, (char) ('A' + slimeCnt++));
+            default -> throw new IllegalArgumentException();
+        };
     }
 }
