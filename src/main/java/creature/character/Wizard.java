@@ -14,23 +14,22 @@ public class Wizard extends Character {
 
     @Override
     public void attack(final Creature target) {
-        System.out.println
-                (this.getName() + "は石を投げた！" + target.getName() + "に3のダメージを与えた！");
         target.setHp(target.getHp() - 3);
+        System.out.println(this.getName() + "は石を投げた！" + target.getName() + "に3のダメージを与えた！");
     }
     public void magic(final Creature target) {
         if(this.getMp() >= this.getWeapon().getCost()) {
             this.setMp(this.getMp() - this.getWeapon().getCost());
-            System.out.println(getName() + "は" + this.getWeapon().getName() +this.getWeapon().attackMessage() + target.getName() + "に" + this.getWeapon().getDamage() + "のダメージを与えた！");
             target.setHp(target.getHp() - this.getWeapon().getDamage());
+            System.out.println(getName() + "は" + this.getWeapon().getName() +this.getWeapon().attackMessage() + target.getName() + "に" + this.getWeapon().getDamage() + "のダメージを与えた！");
         } else {
             System.out.println("MPが足りない！");
         }
     }
 
     @Override
-    public void showStatus(){
-        System.out.println(this.getName() + "：HP " + this.getHp() + " ：MP " + this.getMp());
+    public String showStatus(){
+        return this.getName() + "：HP " + this.getHp() + " / MP " + this.getMp();
     }
     public int getMp() {
         return this.mp;

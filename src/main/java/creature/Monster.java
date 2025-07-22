@@ -21,9 +21,8 @@ public abstract class Monster implements Creature {
         return hp > 0;
     }
     @Override
-    public void showStatus() {
-        System.out.println
-                (this.getName() + this.getSuffix() + "：HP " + this.getHp());
+    public String showStatus() {
+        return this.getName() + this.getSuffix() + "：HP " + this.getHp();
     }
     public void run() {
         System.out.println(this.getName() + this.getSuffix() + "は逃げ出した");
