@@ -15,7 +15,7 @@ import jakarta.servlet.annotation.*;
 @WebServlet("/SelectServlet")//クラス名と同じ
 public class SelectServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html; charset=UTF-8");
 
         HttpSession session = request.getSession();
         ArrayList<Character> party = (ArrayList<Character>) session.getAttribute("party");

@@ -15,7 +15,8 @@ import creature.monster.Slime;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "BattleServlet")
+@WebServlet("/BattleServlet")
+
 public class BattleServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -32,18 +33,24 @@ public class BattleServlet extends HttpServlet {
         Character curChar = (Character) session.getAttribute("curChar");
         Monster curTar = monsters.get(target);
 
+        System.out.println("Action: " + action);
+        System.out.println("Target: " + target);
+        System.out.println("Current Character: " + curChar.getName());
+
+        String attackMessage = "";
         switch (curChar) {
             case SuperHero curSuperHero -> {
-                curSuperHero.attack(curTar);
+                attackMessage = curSuperHero.attack(curTar);
             }
             case Hero curHero -> {
                 switch (action) {
                     case 0:
-                        curHero.attack(curTar);
+                        attackMessage = curHero.attack(curTar);
                         break;
                     case 1:
                         SuperHero curSuperHero = new SuperHero(curHero);
-                        party.set(party.indexOf(curHero), curSuperHero);                        if (!curSuperHero.isAlive()) {
+                        party.set(party.indexOf(curHero), curSuperHero);
+                        if (!curSuperHero.isAlive()) {
                             System.out.print("が、");
                             curSuperHero.die();
                             System.out.print("www");
@@ -55,7 +62,7 @@ public class BattleServlet extends HttpServlet {
             case Thief curThief -> {
                 switch (action) {
                     case 0:
-                        curThief.attack(curTar);
+                        attackMessage = curThief.attack(curTar);
                         break;
                     case 1:
                         curThief.guard();
@@ -65,10 +72,10 @@ public class BattleServlet extends HttpServlet {
             case Wizard curWizard -> {
                 switch (action) {
                     case 0:
-                        curWizard.attack(curTar);
+                        attackMessage = curWizard.attack(curTar);
                         break;
                     case 1:
-                        curWizard.magic(curTar);
+                        attackMessage = curWizard.magic(curTar);
                         break;
                 }
             }
@@ -78,11 +85,11 @@ public class BattleServlet extends HttpServlet {
 
 
 
-        //html
+        //HTML
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
         out.println("<h1>戦闘結果</h1>");
-        out.println("");
+        out.println("<p>" +attackMessage+ "</p>");
         out.println("<hr>");
         out.println("<h2>---味方パーティー---</h2>");
         for(Character character : party) {
@@ -101,18 +108,6 @@ public class BattleServlet extends HttpServlet {
         out.println("<button type=\"submit\">戦闘開始！</button>");//ボタンの設置
         out.println("</form>");//formの内容がここまでと宣言する
         out.println("</body></html>");
-    }
-
-    private static Monster choiceEnemy() {
-        switch ((int)(Math.random() * 3)) {
-            case 0:
-                return new Matango(45, (char) ('A' + matangoCnt++));
-            case 1:
-                return new Goblin(50, (char) ('A' + goblinCnt++));
-            case 2:
-                return new Slime(40, (char) ('A' + slimeCnt++));
-            default:
-                throw new IllegalArgumentException();
-        }
+        //HTMLおわり
     }
 }
