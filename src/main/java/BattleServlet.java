@@ -26,7 +26,6 @@ public class BattleServlet extends HttpServlet {
         ArrayList<Character> party = (ArrayList<Character>) session.getAttribute("party");
         ArrayList<Monster> monsters = (ArrayList<Monster>) session.getAttribute("monsters");
         Iterator<Character> itChar = (Iterator<Character>) session.getAttribute("itChar");
-        Iterator<Monster> itMon = (Iterator<Monster>) session.getAttribute("itMon");
 
         int action = Integer.parseInt(request.getParameter("action"));
         int target = Integer.parseInt(request.getParameter("target"));
@@ -104,8 +103,16 @@ public class BattleServlet extends HttpServlet {
             out.println("<br>");
         }
         out.println("<br>");
-        out.println("<form action=\"SelectServlet\" method=\"post\">");//SelectServletに送るためのformを作る
-        out.println("<button type=\"submit\">戦闘開始！</button>");//ボタンの設置
+        if (itChar.hasNext()) {
+            out.println("<form action=\"SelectServlet\" method=\"post\">");
+        } else {
+            out.println("<form action=\"MonsterServlet\" method=\"post\">");
+        }
+        if(itChar.hasNext()) {
+            out.println("<button type=\"submit\">次のキャラクターへ</button>");//ボタンの設置
+        } else {
+            out.println("<button type=\"submit\">敵のターンへ</button>");
+        }
         out.println("</form>");//formの内容がここまでと宣言する
         out.println("</body></html>");
         //HTMLおわり
