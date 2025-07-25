@@ -21,7 +21,6 @@ public class SelectServlet extends HttpServlet {
         ArrayList<Character> party = (ArrayList<Character>) session.getAttribute("party");
         ArrayList<Monster> monsters = (ArrayList<Monster>) session.getAttribute("monsters");
         Iterator<Character> itChar = (Iterator<Character>) session.getAttribute("itChar");
-        Iterator<Monster> itMon = (Iterator<Monster>) session.getAttribute("itMon");
 
         Character curChar = itChar.next();
         ArrayList<String> actions = getAction(curChar);
@@ -29,7 +28,6 @@ public class SelectServlet extends HttpServlet {
         session.setAttribute("party", party);
         session.setAttribute("monsters", monsters);
         session.setAttribute("itChar", itChar);
-        session.setAttribute("itMon", itMon);
         session.setAttribute("curChar", curChar);
 
         //HTML

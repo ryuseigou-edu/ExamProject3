@@ -25,9 +25,8 @@ public abstract class Character implements Creature {
     public String showStatus(){
        return this.getName() + "：HP " + this.getHp();
     }
-    public void die(){
-        System.out.println
-                (this.getName() + "は死んでしまった！");
+    public String die(){
+        return (this.getName() + "は死んでしまった！");
     }
 
     @Override

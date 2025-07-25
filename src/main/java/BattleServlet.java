@@ -36,6 +36,8 @@ public class BattleServlet extends HttpServlet {
         System.out.println("Target: " + target);
         System.out.println("Current Character: " + curChar.getName());
 
+        ArrayList<String> messages = new ArrayList<>();
+
         String attackMessage = "";
         switch (curChar) {
             case SuperHero curSuperHero -> {
@@ -48,11 +50,11 @@ public class BattleServlet extends HttpServlet {
                         break;
                     case 1:
                         SuperHero curSuperHero = new SuperHero(curHero);
+                        messages.add("なんか勇者が突然光だした！");
+                        messages.add("勇者は30ダメージを受けてスーパーヒーローに進化した！");
                         party.set(party.indexOf(curHero), curSuperHero);
                         if (!curSuperHero.isAlive()) {
-                            System.out.print("が、");
-                            curSuperHero.die();
-                            System.out.print("www");
+                            messages.add("が、"+curSuperHero.die()+"www");
                             itChar.remove();
                         }
                         break;
@@ -81,6 +83,17 @@ public class BattleServlet extends HttpServlet {
             default -> {
             }
         }
+        if (!curTar.isAlive()) {
+            messages.add(curTar.die());
+            monsters.remove(curTar);
+        } else if (curTar.getHp() <= 5) {
+            messages.add(curTar.run());
+            monsters.remove(curTar);
+        }
+
+        session.setAttribute("party", party);
+        session.setAttribute("monsters", monsters);
+        session.setAttribute("itChar", itChar);
 
 
 
@@ -89,6 +102,9 @@ public class BattleServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h1>戦闘結果</h1>");
         out.println("<p>" +attackMessage+ "</p>");
+        for(String message : messages) {
+            out.print("<p>"+message+"</p>");
+        }
         out.println("<hr>");
         out.println("<h2>---味方パーティー---</h2>");
         for(Character character : party) {
@@ -103,12 +119,16 @@ public class BattleServlet extends HttpServlet {
             out.println("<br>");
         }
         out.println("<br>");
-        if (itChar.hasNext()) {
+        if(party.isEmpty() || monsters.isEmpty()) {
+            out.println("<form action=\"BattleEndServlet\" method=\"post\">");
+        } else if (itChar.hasNext()) {
             out.println("<form action=\"SelectServlet\" method=\"post\">");
         } else {
             out.println("<form action=\"MonsterServlet\" method=\"post\">");
         }
-        if(itChar.hasNext()) {
+        if(party.isEmpty() || monsters.isEmpty()) {
+            out.println("<button type=\"submit\">リザルトへ</button>");
+        } else if(itChar.hasNext()) {
             out.println("<button type=\"submit\">次のキャラクターへ</button>");//ボタンの設置
         } else {
             out.println("<button type=\"submit\">敵のターンへ</button>");

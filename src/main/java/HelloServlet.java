@@ -43,7 +43,6 @@ public class HelloServlet extends HttpServlet {
         session.setAttribute("party", party);
         session.setAttribute("monsters", monsters);
         session.setAttribute("itChar", party.iterator());
-        session.setAttribute("itMon", monsters.iterator());
 
         PrintWriter out = response.getWriter();
 

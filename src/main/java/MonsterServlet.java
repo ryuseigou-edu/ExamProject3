@@ -26,29 +26,23 @@ public class MonsterServlet extends HttpServlet {
         ArrayList<Character> party = (ArrayList<Character>) session.getAttribute("party");
         ArrayList<Monster> monsters = (ArrayList<Monster>) session.getAttribute("monsters");
         Iterator<Character> itChar = (Iterator<Character>) session.getAttribute("itChar");
-        Iterator<Monster> itMon = (Iterator<Monster>) session.getAttribute("itMon");
+        Iterator<Monster> itMon = monsters.iterator();
 
+        ArrayList<String> actions = new ArrayList<>();
+        ArrayList<String> messages = new ArrayList<>();
 
-
-        //HTML
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>戦闘結果</h1>");
-        out.println("<p>" +attackMessage+ "</p>");
-        out.println("<hr>");
-        out.println("<h2>---敵の攻撃---</h2>");
         while (itMon.hasNext()) {
             Monster curMon = itMon.next();
             Character curTar = party.get((int) (Math.random() * party.size()));
             if (curMon instanceof Matango curMatango) {
-                curMatango.attack(curTar);
+                actions.add(curMatango.attack(curTar));
             } else if (curMon instanceof Goblin curGoblin) {
-                curGoblin.attack(curTar);
+                actions.add(curGoblin.attack(curTar));
             } else if (curMon instanceof Slime curSlime) {
-                curSlime.attack(curTar);
+                actions.add(curSlime.attack(curTar));
             }
             if (!curTar.isAlive()) {
-                curTar.die();
+                messages.add(curTar.die());
                 party.remove(curTar);
             }
             if (monsters.isEmpty()) {
@@ -56,9 +50,38 @@ public class MonsterServlet extends HttpServlet {
             }
         }
 
+        session.setAttribute("party", party);
+        session.setAttribute("monsters", monsters);
+        session.setAttribute("itChar", party.iterator());
+
+
+        //HTML
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h1>戦闘結果</h1>");
+        //out.println("<p>" +attackMessage+ "</p>");
+        for(String action : actions) {
+            out.println("<p>"+action+"</p>");
+        }
+        for(String message : messages) {
+            out.println("<p>"+message+"</p>");
+        }
         out.println("<br>");
-        out.println("<form action=\"SelectServlet\" method=\"post\">");
-        out.println("<button type=\"submit\">次のキャラクターへ</button>");//ボタンの設置
+        out.println("<hr>");
+        out.println("<h2>---味方パーティー---</h2>");
+        for(Character character : party) {
+            out.println(character.showStatus());
+            out.println("<br>");
+        }
+        out.println("<hr>");
+        out.println("<br>");
+        if(party.isEmpty() || monsters.isEmpty()) {
+            out.println("<form action=\"BattleEndServlet\" method=\"post\">");
+            out.println("<button type=\"submit\">リザルトへ</button>");
+        } else {
+            out.println("<form action=\"SelectServlet\" method=\"post\">");
+            out.println("<button type=\"submit\">味方のターンヘ</button>");
+        }
         out.println("</form>");//formの内容がここまでと宣言する
         out.println("</body></html>");
         //HTMLおわり

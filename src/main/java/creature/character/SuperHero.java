@@ -8,8 +8,6 @@ public class SuperHero extends Hero {
         super(hero.getName(), hero.getHp(), hero.getWeapon());
 
         this.setHp(this.getHp() - 30);
-        System.out.println("なんか勇者が突然光だした！");
-        System.out.println("勇者は30ダメージを受けてスーパーヒーローに進化した！");
     }
 
     @Override
