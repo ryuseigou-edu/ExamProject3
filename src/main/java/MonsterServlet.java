@@ -4,10 +4,6 @@ import java.util.Iterator;
 
 import creature.Character;
 import creature.Monster;
-import creature.character.Hero;
-import creature.character.SuperHero;
-import creature.character.Thief;
-import creature.character.Wizard;
 import creature.monster.Goblin;
 import creature.monster.Matango;
 import creature.monster.Slime;
@@ -25,7 +21,6 @@ public class MonsterServlet extends HttpServlet {
 
         ArrayList<Character> party = (ArrayList<Character>) session.getAttribute("party");
         ArrayList<Monster> monsters = (ArrayList<Monster>) session.getAttribute("monsters");
-        Iterator<Character> itChar = (Iterator<Character>) session.getAttribute("itChar");
         Iterator<Monster> itMon = monsters.iterator();
 
         ArrayList<String> actions = new ArrayList<>();
