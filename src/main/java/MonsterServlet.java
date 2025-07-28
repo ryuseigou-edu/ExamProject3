@@ -40,7 +40,7 @@ public class MonsterServlet extends HttpServlet {
                 messages.add(curTar.die());
                 party.remove(curTar);
             }
-            if (monsters.isEmpty()) {
+            if (party.isEmpty()) {
                 break;
             }
         }

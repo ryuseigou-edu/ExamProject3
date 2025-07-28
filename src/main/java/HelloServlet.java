@@ -16,7 +16,7 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "HelloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
-    private static final int MONSTERS_SIZE = 5;
+    private static final int MONSTERS_SIZE = 20000;
     private static int matangoCnt = 0;
     private static int goblinCnt = 0;
     private static int slimeCnt = 0;
