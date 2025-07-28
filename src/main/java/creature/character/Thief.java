@@ -21,7 +21,7 @@ public class Thief extends Character {
     }
 
     @Override
-    public void setHp(int hp) {
+    public boolean setHp(int hp) {
         if(guard) {
             guard = false;
             System.out.println("しかし、"+this.getName()+"は攻撃を回避し、ダメージが入らなかった！");
